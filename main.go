@@ -56,7 +56,7 @@ func getContent(pathStr string) ([]byte, error) {
 	defer fp.Close()
 
 	content, err := ioutil.ReadAll(fp)
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 	return content, nil
@@ -94,7 +94,7 @@ func EncryptFile(destPath, srcPath string) error {
 	}
 	mode := cipher.NewCBCEncrypter(block, iv)
 	mode.CryptBlocks(out[aes.BlockSize:], content)
-	return write2File(destPath, []byte(fmt.Sprintf("%x", out)))
+	return write2File(destPath, out)
 }
 
 func DecryptFile(destPath, srcPath string) error {
