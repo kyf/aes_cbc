@@ -25,7 +25,7 @@ func TestDecryptFile(t *testing.T) {
 	if err != nil {
 		t.Errorf("error is %v\n", err)
 	}
-	err = EncryptFile("decrypt_file", "encrypt_file")
+	err = DecryptFile("decrypt_file", "encrypt_file")
 	if err != nil {
 		t.Errorf("error is %v\n", err)
 	}

@@ -6,6 +6,7 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -93,7 +94,7 @@ func EncryptFile(destPath, srcPath string) error {
 	}
 	mode := cipher.NewCBCEncrypter(block, iv)
 	mode.CryptBlocks(out[aes.BlockSize:], content)
-	return write2File(destPath, out)
+	return write2File(destPath, []byte(fmt.Sprintf("%x", out)))
 }
 
 func DecryptFile(destPath, srcPath string) error {
@@ -107,7 +108,9 @@ func DecryptFile(destPath, srcPath string) error {
 		return err
 	}
 
-	out := make([]byte, len(content)-aes.BlockSize)
+	fmt.Println("content length is ", len(content))
+
+	out := make([]byte, (len(content) - aes.BlockSize))
 	iv := content[:aes.BlockSize]
 	mode := cipher.NewCBCDecrypter(block, iv)
 	mode.CryptBlocks(out, content[aes.BlockSize:])
